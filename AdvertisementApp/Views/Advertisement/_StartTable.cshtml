@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AdvertisementApp.Core.Models.Domains.Advertisement>
+
+<div id="startTable">
+    <table class="table table-bordered mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Tytuł</th>
+                <th scope="col">Opis</th>
+                <th scope="col">Kategoria</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var advertisement in Model)
+                {
+                    <tr>
+                        <td>
+
+                            <a href="@Url.Action("Advertisement", "Advertisement",
+                                        new { id = advertisement.Id})"
+                               class="font-weight-bold">
+                                @advertisement.Title
+                            </a>
+
+                        </td>
+                        <td>@advertisement.Description</td>
+                        <td>@advertisement.Category.Name</td>
+
+                        <td>
+                            
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr class="text-center"
+                    colspan="5">
+                    Brak ogłoszeń
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

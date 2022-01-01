@@ -1,0 +1,86 @@
+﻿@model AdvertisementApp.Core.ViewModels.AdvertisementsViewModel
+
+@{
+    ViewData["Title"] = "Advertisements";
+}
+
+<h1 class="mb-3">Moje ogłoszenia</h1>
+
+<form id="filterForm" class="row gy-2 gx-3 align-items-center">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            @Html.TextBoxFor(x => x.FilterAdvertisements.Title,
+           new { @class = "form-control mb-2", placeholder = "Tytuł" })
+        </div>
+        <div class="col-auto">
+            @Html.DropDownListFor(x => x.FilterAdvertisements.CategoryId,
+                new SelectList(Model.Categories, "Id", "Name"),
+                "--wybierz kategorię--",
+                new { @class = "form-control mb-2" })
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Szukaj</button>
+        </div>
+    </div>
+</form>
+
+<div>
+    @await Html.PartialAsync("_AdvertisementsTable", Model.Advertisements)
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#filterForm').submit(function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Advertisements", "Advertisement")",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $('#advertisementsTable').html(data)
+                    },
+                    error: function (data) {
+                        alert(data.message)
+                    },
+                    dataType: "html"
+                });
+                return false;
+
+            });
+
+        });
+
+
+        function deleteAdvertisement(id, btn) {
+
+            if (!confirm("Czy na pewno chcesz usunąć ogłoszenie?"))
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Delete", "Advertisement")",
+                data: {
+                    id: id 
+                },
+                success: function (data) {
+                    if (data.success) {
+                        var row = btn.parentNode.parentNode;
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert(data.message)
+                    }
+                },
+                error: function (data) {
+                        alert(data.message)
+                },
+                dataType: "json"
+                });
+        }
+
+    </script>
+}
