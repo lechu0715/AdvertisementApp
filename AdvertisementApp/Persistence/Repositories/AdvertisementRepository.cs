@@ -1,9 +1,9 @@
 ﻿using AdvertisementApp.Core.Models.Domains;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisementApp.Persistence.Repositories
 {
@@ -25,7 +25,7 @@ namespace AdvertisementApp.Persistence.Repositories
             if (categoryId != 0)
                 advertisements = advertisements.Where(x => x.CategoryId == categoryId);
 
-            if (string.IsNullOrWhiteSpace(title))
+            if (!string.IsNullOrWhiteSpace(title))
                 advertisements = advertisements.Where(x => x.Title.Contains(title));
 
             return advertisements.OrderBy(x => x.Id).ToList();
@@ -38,8 +38,14 @@ namespace AdvertisementApp.Persistence.Repositories
 
         public IEnumerable<Advertisement> GetAll(int categoryId = 0, string title = null)
         {
-            var advertisements = _context.Advertisements.Include(x => x.Category);
-            
+            var advertisements = _context.Advertisements.Include(x => x.Category).AsQueryable();
+
+            if (categoryId != 0)
+                advertisements = advertisements.Where(x => x.CategoryId == categoryId);
+
+            if (!string.IsNullOrWhiteSpace(title))
+                advertisements = advertisements.Where(x => x.Title.Contains(title));
+
             return advertisements.OrderBy(x => x.Id).ToList();
         }
 

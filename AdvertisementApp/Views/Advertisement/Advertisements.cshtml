@@ -26,7 +26,7 @@
 </form>
 
 <div>
-    @await Html.PartialAsync("_AdvertisementsTable", Model.Advertisements)
+    @await Html.PartialAsync("_AdvertisementsTable.cshtml", Model.Advertisements)
 </div>
 
 @section Scripts
@@ -42,7 +42,7 @@
                     url: "@Url.Action("Advertisements", "Advertisement")",
                     data: $(this).serialize(),
                     success: function (data) {
-                        $('#advertisementsTable').html(data)
+                        $('#advertisementsTable').html(data);
                     },
                     error: function (data) {
                         alert(data.message)
