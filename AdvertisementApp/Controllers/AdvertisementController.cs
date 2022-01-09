@@ -7,10 +7,6 @@ using AdvertisementApp.Persistence.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace AdvertisementApp.Controllers
 {
@@ -27,6 +23,7 @@ namespace AdvertisementApp.Controllers
         [AllowAnonymous]
         public IActionResult Start()
         {
+
             var vm = new AdvertisementsViewModel()
             {
                 FilterAdvertisements = new FilterAdvertisements(),
@@ -56,6 +53,8 @@ namespace AdvertisementApp.Controllers
         public IActionResult Start(AdvertisementsViewModel viewModel)
         {
             var advertisements = _advertisementRepository.GetAll(
+                viewModel.FilterAdvertisements.FilterPrice.From,
+                viewModel.FilterAdvertisements.FilterPrice.To,
                 viewModel.FilterAdvertisements.CategoryId,
                 viewModel.FilterAdvertisements.Title);
 
@@ -68,6 +67,8 @@ namespace AdvertisementApp.Controllers
             var userId = User.GetUserId();
 
             var advertisements = _advertisementRepository.Get(userId,
+                viewModel.FilterAdvertisements.FilterPrice.From,
+                viewModel.FilterAdvertisements.FilterPrice.To,
                 viewModel.FilterAdvertisements.CategoryId,
                 viewModel.FilterAdvertisements.Title);
 

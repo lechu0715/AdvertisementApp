@@ -9,6 +9,7 @@ namespace AdvertisementApp.Core.Models
     {
         public string Title { get; set; }
         public int CategoryId { get; set; }
-        public int Price { get; set; }
+
+        public FilterPrice FilterPrice { get; set; }
     }
 }

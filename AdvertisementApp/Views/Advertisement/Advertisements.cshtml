@@ -20,6 +20,15 @@
         </div>
 
         <div class="col-auto">
+            @Html.TextBoxFor(x => x.FilterAdvertisements.FilterPrice.From,
+           new { @class = "form-control mb-2", placeholder = "Cena od:" })
+        </div>
+        <div class="col-auto">
+            @Html.TextBoxFor(x => x.FilterAdvertisements.FilterPrice.To,
+           new { @class = "form-control mb-2", placeholder = "Cena do:" })
+        </div>
+
+        <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-2">Szukaj</button>
         </div>
     </div>

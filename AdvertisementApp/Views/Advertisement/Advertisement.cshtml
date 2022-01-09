@@ -7,9 +7,9 @@
 
 <h1>@Model.Heading</h1>
 
-@using (Html.BeginForm("Advertisement", "Advertisement"))
+@using (Html.BeginForm("Advertisement", "Advertisement", new { enctype = "multipart/form-data" }))
 {
-    <p class="alert alert-info mt-4 mb-4">Pola tytuł, opis i kategoria są <strong>wymagane</strong></p>
+    <p class="alert alert-info mt-4 mb-4">Pola tytuł, opis, cena i kategoria są <strong>wymagane</strong></p>
 
 
     @Html.AntiForgeryToken()
@@ -29,14 +29,25 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(x => x.Advertisement.Price)
+        @Html.TextBoxFor(x => x.Advertisement.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Advertisement.Price)
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(x => x.Advertisement.CategoryId)
-        @Html.DropDownListFor(x => x.Advertisement.CategoryId, 
+        @Html.DropDownListFor(x => x.Advertisement.CategoryId,
             new SelectList(Model.Categories, "Id", "Name"),
             "--wybierz kategorię--",
             new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.Advertisement.CategoryId)
     </div>
 
+    <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+
+
     <button type="submit"
-            class="btn btn-primary btn-lg mt-2">Zapisz</button>
+            class="btn btn-primary btn-lg mt-2">
+        Zapisz
+    </button>
 }

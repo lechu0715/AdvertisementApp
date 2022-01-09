@@ -20,9 +20,12 @@ namespace AdvertisementApp.Core.Models.Domains
         [Display(Name = "Opis")]
         public string Description { get; set; }
 
-        /*[Required(ErrorMessage = "Pole cena jest wymagane")]
+        [Required(ErrorMessage = "Pole cena jest wymagane")]
         [Display(Name = "Cena")]
-        public int Price { get; set; }*/
+        public decimal Price { get; set; }
+
+        [Display(Name = "Zdjęcie")]
+        public string ImageName { get; set; }
 
         [Required(ErrorMessage = "Pole kategoria jest wymagane")]
         [Display(Name = "Kategoria")]

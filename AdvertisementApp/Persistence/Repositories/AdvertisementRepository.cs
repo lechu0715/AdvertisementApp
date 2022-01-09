@@ -16,7 +16,8 @@ namespace AdvertisementApp.Persistence.Repositories
             _context = context;
         }
 
-        public IEnumerable<Advertisement> Get(string userId, int categoryId = 0, string title = null)
+        public IEnumerable<Advertisement> Get(string userId, decimal from = 0, 
+            decimal to = 79228162514264337593543950335M, int categoryId = 0, string title = null)
         {
             var advertisements = _context.Advertisements
                 .Include(x => x.Category)
@@ -28,6 +29,12 @@ namespace AdvertisementApp.Persistence.Repositories
             if (!string.IsNullOrWhiteSpace(title))
                 advertisements = advertisements.Where(x => x.Title.Contains(title));
 
+            if (from != 0)
+                advertisements = advertisements.Where(x => x.Price >= from);
+
+            if (to != 0)
+                advertisements = advertisements.Where(x => x.Price <= to);
+
             return advertisements.OrderBy(x => x.Id).ToList();
         }
 
@@ -36,7 +43,8 @@ namespace AdvertisementApp.Persistence.Repositories
             return _context.Categories.OrderBy(x => x.Name).ToList();
         }
 
-        public IEnumerable<Advertisement> GetAll(int categoryId = 0, string title = null)
+        public IEnumerable<Advertisement> GetAll(decimal from = 0, decimal to = 79228162514264337593543950335M, 
+            int categoryId = 0, string title = null)
         {
             var advertisements = _context.Advertisements.Include(x => x.Category).AsQueryable();
 
@@ -45,6 +53,12 @@ namespace AdvertisementApp.Persistence.Repositories
 
             if (!string.IsNullOrWhiteSpace(title))
                 advertisements = advertisements.Where(x => x.Title.Contains(title));
+
+            if (from != 0)
+                advertisements = advertisements.Where(x => x.Price >= from);
+
+            if (to != 0)
+                advertisements = advertisements.Where(x => x.Price <= to);
 
             return advertisements.OrderBy(x => x.Id).ToList();
         }
@@ -68,6 +82,8 @@ namespace AdvertisementApp.Persistence.Repositories
 
             advertisementToUpdate.CategoryId = advertisement.CategoryId;
             advertisementToUpdate.Description = advertisement.Description;
+            advertisementToUpdate.Price = advertisement.Price;
+            advertisementToUpdate.ImageName = advertisement.ImageName;
             advertisementToUpdate.Title = advertisement.Title;
 
             _context.SaveChanges();

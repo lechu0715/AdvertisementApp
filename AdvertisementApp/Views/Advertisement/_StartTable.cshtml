@@ -4,10 +4,11 @@
     <table class="table table-bordered mt-3">
         <thead class="table-dark">
             <tr>
+                <th scope="col"></th>
                 <th scope="col">Tytuł</th>
                 <th scope="col">Opis</th>
                 <th scope="col">Kategoria</th>
-                <th scope="col"></th>
+                <th scope="col">Cena</th>
             </tr>
         </thead>
         <tbody>
@@ -15,23 +16,13 @@
             {
                 foreach (var advertisement in Model)
                 {
-                    <tr>
-                        <td>
-
-                            <a href="@Url.Action("Advertisement", "Advertisement",
-                                        new { id = advertisement.Id})"
-                               class="font-weight-bold">
-                                @advertisement.Title
-                            </a>
-
-                        </td>
-                        <td>@advertisement.Description</td>
-                        <td>@advertisement.Category.Name</td>
-
-                        <td>
-                            
-                        </td>
-                    </tr>
+            <tr>
+                <td>Tu będzie zdjęcie</td>
+                <td>@advertisement.Title</td>
+                <td>@advertisement.Description</td>
+                <td>@advertisement.Category.Name</td>
+                <td>@advertisement.Price</td>
+            </tr>
                 }
             }
             else
