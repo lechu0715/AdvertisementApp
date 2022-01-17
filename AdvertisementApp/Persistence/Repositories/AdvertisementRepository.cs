@@ -1,7 +1,9 @@
 ﻿using AdvertisementApp.Core.Models.Domains;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,10 +12,12 @@ namespace AdvertisementApp.Persistence.Repositories
     public class AdvertisementRepository
     {
         private ApplicationDbContext _context;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public AdvertisementRepository(ApplicationDbContext context)
+        public AdvertisementRepository(ApplicationDbContext context, IWebHostEnvironment webHost)
         {
             _context = context;
+            webHostEnvironment = webHost;
         }
 
         public IEnumerable<Advertisement> Get(string userId, decimal from = 0, 
@@ -72,6 +76,7 @@ namespace AdvertisementApp.Persistence.Repositories
 
         public void Add(Advertisement advertisement)
         {
+            advertisement.ImageName = UploadedFile(advertisement);
             _context.Advertisements.Add(advertisement);
             _context.SaveChanges();
         }
@@ -83,7 +88,7 @@ namespace AdvertisementApp.Persistence.Repositories
             advertisementToUpdate.CategoryId = advertisement.CategoryId;
             advertisementToUpdate.Description = advertisement.Description;
             advertisementToUpdate.Price = advertisement.Price;
-            advertisementToUpdate.ImageName = advertisement.ImageName;
+            advertisementToUpdate.ImageName = UploadedFile(advertisement);
             advertisementToUpdate.Title = advertisement.Title;
 
             _context.SaveChanges();
@@ -96,5 +101,25 @@ namespace AdvertisementApp.Persistence.Repositories
             _context.Advertisements.Remove(advertisementToDelete);
             _context.SaveChanges();
         }
+
+        public string UploadedFile(Advertisement advertisement)
+        {
+            string uniqueFileName = null;
+
+            if (advertisement.FrontImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + advertisement.FrontImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    advertisement.FrontImage.CopyTo(fileStream);
+                }
+            }
+
+            return uniqueFileName;
+        }
+
+
     }
 }

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,5 +38,9 @@ namespace AdvertisementApp.Core.Models.Domains
 
         public Category Category { get; set; }
         public ApplicationUser User { get; set; }
+
+        [Display(Name = "Zdjęcie")]
+        [NotMapped]
+        public IFormFile FrontImage { get; set; }
     }
 }

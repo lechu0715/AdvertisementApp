@@ -16,13 +16,15 @@
             {
                 foreach (var advertisement in Model)
                 {
-            <tr>
-                <td>Tu będzie zdjęcie</td>
-                <td>@advertisement.Title</td>
-                <td>@advertisement.Description</td>
-                <td>@advertisement.Category.Name</td>
-                <td>@advertisement.Price</td>
-            </tr>
+                    <tr>
+                        <td>
+                            <img src="~/Images/@advertisement.ImageName" />
+                        </td>
+                        <td>@advertisement.Title</td>
+                        <td>@advertisement.Description</td>
+                        <td>@advertisement.Category.Name</td>
+                        <td>@advertisement.Price</td>
+                    </tr>
                 }
             }
             else

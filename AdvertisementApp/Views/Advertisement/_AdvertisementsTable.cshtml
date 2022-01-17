@@ -18,7 +18,10 @@
                 foreach (var advertisement in Model)
                 {
                     <tr>
-                        <td>Tu będzie zdjęcie</td>
+                        
+                        <td>
+                            <img src="~/Images/@advertisement.ImageName"/>
+                        </td>
                         <td>
                             <a href="@Url.Action("Advertisement", "Advertisement",
                                         new { id = advertisement.Id})"
@@ -29,7 +32,7 @@
                         <td>@advertisement.Description</td>
                         <td>@advertisement.Category.Name</td>
                         <td>@advertisement.Price</td>
-                        
+
 
                         <td>
                             <button class="btn btn-danger mr-2"

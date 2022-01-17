@@ -7,6 +7,8 @@ using AdvertisementApp.Persistence.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AdvertisementApp.Controllers
 {
@@ -14,10 +16,11 @@ namespace AdvertisementApp.Controllers
     public class AdvertisementController : Controller
     {
         private AdvertisementRepository _advertisementRepository;
+        //private readonly IWebHostEnvironment webHostEnvironment;
 
-        public AdvertisementController(ApplicationDbContext context)
+        public AdvertisementController(ApplicationDbContext context, IWebHostEnvironment webHost)
         {
-            _advertisementRepository = new AdvertisementRepository(context);
+            _advertisementRepository = new AdvertisementRepository(context, webHost);
         }
 
         [AllowAnonymous]
@@ -98,6 +101,7 @@ namespace AdvertisementApp.Controllers
         public IActionResult Advertisement(Advertisement advertisement)
         {
             var userId = User.GetUserId();
+            advertisement.ImageName = _advertisementRepository.UploadedFile(advertisement);
 
             advertisement.UserId = userId;
 
@@ -136,5 +140,6 @@ namespace AdvertisementApp.Controllers
 
             return Json(new { success = true});
         }
+
     }
 }

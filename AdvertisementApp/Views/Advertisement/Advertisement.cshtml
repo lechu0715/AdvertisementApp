@@ -11,7 +11,6 @@
 {
     <p class="alert alert-info mt-4 mb-4">Pola tytuł, opis, cena i kategoria są <strong>wymagane</strong></p>
 
-
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.Advertisement.Id)
 
@@ -43,11 +42,39 @@
         @Html.ValidationMessageFor(x => x.Advertisement.CategoryId)
     </div>
 
-    <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+    <div>
+        <div class="custom-file">
+            <input asp-for="Advertisement.FrontImage"
+                   class="custom-file-input"
+                   id="FLFrontImage"
+                   onchange="document.getElementById('FrontImagePrv').src = window.URL.createObjectURL(this.files[0])" />
+            <label class="custom-file-label" for="FLFrontImage">wybierz zdjęcie</label>
+        </div>
+
+        <img id="FrontImagePrv" src="" alt="Zdjęcie" 
+             width="150" 
+             height="150"
+             style="border: 1px; margin-top: 20px; margin-left: 100px;"/>
+
+    </div>
 
 
     <button type="submit"
             class="btn btn-primary btn-lg mt-2">
         Zapisz
     </button>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        @*$(".custom-file-input").on("Advertisement", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });*@
+
+    </script>
+
 }
